@@ -12,10 +12,10 @@ exports.addNewTask = async (req, res) => {
             deadline,
             description: description.trim()
         })
-        responseReturn(res, 200, { message: 'Article added successful' })
+        responseReturn(res, 200, { message: 'Task added successful' })
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         responseReturn(res, 500, { error: error.message })
     }
 }
@@ -37,13 +37,49 @@ exports.getMyTasks = async (req, res) => {
 }
 
 
+// Update task
+exports.updateMyTask = async (req, res) => {
+    const { name, userEmail, priority, deadline, description } = req?.body;
+    const id = req.params.id;
+
+    try {
+        await TasksModel.findByIdAndUpdate(id, {
+            name: name.trim(),
+            userEmail,
+            priority,
+            deadline,
+            description: description.trim()
+        })
+        responseReturn(res, 200, { message: 'Task Updated successful' })
+
+    } catch (error) {
+        // console.log(error);
+        responseReturn(res, 500, { error: error.message })
+    }
+}
+
+
 // delete my tasks
 exports.deleteMyTask = async (req, res) => {
     const taskId = req.params.id;
 
     try {
         await TasksModel.findByIdAndDelete(taskId);
-        responseReturn(res, 200, { message: 'Delete this article successful.' })
+        responseReturn(res, 200, { message: 'Delete this task successful.' })
+    } catch (error) {
+        responseReturn(res, 500, { error: error.message })
+    }
+}
+
+
+// update status
+exports.updateTaskStatus = async (req, res) => {
+    const filter = req.params.id;
+    const update = req?.body?.updateStatus;
+
+    try {
+        await TasksModel.findByIdAndUpdate(filter, { status: update });
+        responseReturn(res, 200, { message: 'Approved this article successful' })
     } catch (error) {
         responseReturn(res, 500, { error: error.message })
     }
