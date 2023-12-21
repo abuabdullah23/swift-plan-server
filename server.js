@@ -1,19 +1,23 @@
 const express = require("express");
 const applyMiddleware = require("./src/middleware/applyMiddleware");
+const connectDB = require("./src/db/connectDB");
 require("dotenv").config();
 const app = express();
 
 const port = process.env.PORT || 5000;
 
-
+// require routes
+const authRoutes = require('./src/routes/authRoutes');
+const taskRoutes = require('./src/routes/taskRoutes');
 
 // middleware
 applyMiddleware(app);
 
 
 
-
-
+// use routes
+app.use(authRoutes);
+app.use(taskRoutes);
 
 
 
@@ -38,7 +42,7 @@ app.use((err, req, res, next) => {
 })
 
 const main = async () => {
-
+    await connectDB();
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     });
