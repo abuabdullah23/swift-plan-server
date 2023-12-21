@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const applyMiddleware = (app) => {
     app.use(cors({
-        origin: ['http://localhost:5173'],
+        origin: ['http://localhost:5173', 'https://swift-plan-client.vercel.app'],
         credentials: true,
         optionsSuccessStatus: 200
     }));
